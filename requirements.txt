@@ -1,0 +1,16 @@
+bitsandbytes
+transformers
+ctransformers[cuda]
+peft
+accelerate
+modelz-llm
+huggingface_hub
+datasets
+loralib
+sentencepiece
+xformers==0.0.21
+einops
+pytest
+coverage
+torch==2.0.1
+torchvision==0.15.2

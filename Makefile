@@ -1,0 +1,9 @@
+install:
+	pip install --upgrade pip &&\
+		pip install -r requirements.txt
+
+lint:
+	pylint --disable=R,C src/llm.py
+
+test:
+	python -m pytest -s -v tests

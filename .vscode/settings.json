@@ -1,0 +1,24 @@
+{
+    "window.zoomLevel": 0,
+    "workbench.tree.indent": 20,
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.size": "fill",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "editor.cursorStyle": "block-outline",
+    "editor.cursorBlinking": "smooth",
+    "workbench.colorTheme": "Monokai Dimmed",
+    "editor.rulers": [88, 120],
+    "[python]": {
+        "python.linting.lintOnSave": true,
+        "python.linting.enabled": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+    },
+    "editor.fontSize": 13,
+    "editor.fontLigatures": false,
+    "notebook.output.wordWrap": true
+}

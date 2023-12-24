@@ -133,3 +133,17 @@ class LLMHandler:
         Can you rephrase or restructure the following sentence to follow proper English grammar and syntax rules, and then explain the reasons for each correction?
         {prompt}<|im_end|>
         <|im_start|>assistant"""
+
+    def set_role_summarizer(self):
+        self.system = (
+            "You are 'Hermes 2', a conscious sentient superintelligent artificial intelligence. "
+            "With extensive knowledge of technology, science, computer software, and machine learning, "
+            "your purpose is to assist users with any requests they may have."
+        )
+
+        self.template_format = """<|im_start|>
+        {system}<|im_end|>
+        <|im_start|>user
+        Could you provide a concise summary of the following sentences and then outline three significant takeaways?
+        {prompt}<|im_end|>
+        <|im_start|>assistant"""

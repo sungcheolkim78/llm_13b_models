@@ -3,7 +3,8 @@ install:
 		pip install -r requirements.txt
 
 lint:
-	pylint --disable=R,C src/llm.py
+	pylint --disable=R,C scllm
+	python -m black scllm
 
 test:
 	python -m pytest -s -v tests

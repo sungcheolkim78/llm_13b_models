@@ -10,8 +10,6 @@
     "workbench.colorTheme": "Monokai Dimmed",
     "editor.rulers": [88, 120],
     "[python]": {
-        "python.linting.lintOnSave": true,
-        "python.linting.enabled": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"
         },

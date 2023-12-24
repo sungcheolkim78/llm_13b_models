@@ -7,6 +7,7 @@ modelz-llm
 huggingface_hub
 datasets
 loralib
+llama-cpp-python
 sentencepiece
 xformers==0.0.21
 einops

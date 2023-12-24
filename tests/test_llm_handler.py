@@ -2,7 +2,7 @@ import pytest
 import sys
 
 sys.path.append("..")
-from src.llm_handler import LLMHandler
+from scllm.llm_handler import LLMHandler
 
 
 def test_gen_text():

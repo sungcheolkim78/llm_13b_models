@@ -1,5 +1,5 @@
 ctransformers[cuda]
-llama-cpp-python
 pytest
 coverage
 black
+llama-cpp-python

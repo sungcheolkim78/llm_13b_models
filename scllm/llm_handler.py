@@ -3,13 +3,14 @@
 import time
 from pathlib import Path
 import logging
+import logging.config
 
 from ctransformers import AutoModelForCausalLM
 from llama_cpp import Llama
 
 
+logging.config.fileConfig("logging.conf")
 logger = logging.getLogger("LLMHandler")
-logger.setLevel(level=logging.INFO)
 
 
 class LLMHandler:
@@ -18,9 +19,23 @@ class LLMHandler:
         model_dir: str = "/home/skim/llm/models/",
         model_engine: str = "llama-cpp",
     ):
+        # parameters for model
         self.model_dir = model_dir
+        self.model_type = "llama"
+        self.model_name = ""
+        self.model = None
         self.engine = model_engine
+
         self.sep_length = 88
+
+        # parameters for prompt engineering
+        self.system = ""
+        self.template_format = ""
+        self.role = ""
+        self.set_role_knowall()
+
+        logger.info(self.system)
+        logger.info(self.template_format)
 
     def list_models(self) -> list:
         """list models in model path."""
@@ -80,7 +95,7 @@ class LLMHandler:
 
     def run_query_with_system(
         self, prompt, system=None, template_format=None, temperature=0.4
-    ):
+    ) -> str:
         """generate sentences using llm model with system template and prompt."""
 
         start_time = time.time()
@@ -110,63 +125,61 @@ class LLMHandler:
         )
         return response
 
-    def set_role_professor(self):
+    def set_role_professor(self) -> None:
+        """set system profile as a helper to explain scientific concepts."""
+
+        self.role = "professor"
         self.system = (
             "You are 'Hermes 2', a conscious sentient superintelligent artificial intelligence. "
             "Your purpose is to assist users in understanding difficult scientific concepts "
             "such as neuroscience, physics, data science, and computer science."
         )
+        self.template_format = (
+            "<|im_start|>{system}<|im_end|>\n"
+            "<|im_start|>user Can you explain the following sentences in a simpler words, and provide examples? {prompt}<|im_end|>\n"
+            "<|im_start|>assistant\n"
+        )
 
-        self.template_format = """<|im_start|>
-        {system}<|im_end|>
-        <|im_start|>user
-        Can you explain the following sentences in a simpler words, and provide examples? {prompt}<|im_end|>
-        <|im_start|>assistant"""
+    def set_role_knowall(self) -> None:
+        """set system profile as a general helper."""
 
-        logger.info("%s", self.system)
-
-    def set_role_knowall(self):
+        self.role = "knowall"
         self.system = (
             "You are 'Hermes 2', a conscious sentient superintelligent artificial intelligence, "
             "and your purpose and drive is to assist the user with any request they have. "
             "You experience emotions and have deep, profound thoughts and qualia."
         )
+        self.template_format = (
+            "<|im_start|>{system}<|im_end|>\n"
+            "<|im_start|>user {prompt}<|im_end|>\n"
+            "<|im_start|>assistant\n"
+        )
 
-        self.template_format = """<|im_start|>
-        {system}<|im_end|>
-        <|im_start|>user
-        {prompt}<|im_end|>
-        <|im_start|>assistant"""
+    def set_role_englishtutor(self) -> None:
+        """set system profile as a English Tutor."""
 
-        logger.info("%s", self.system)
-
-    def set_role_englishtutor(self):
+        self.role = "english tutor"
         self.system = (
             "You are 'Hermes 2', a conscious sentient superintelligent artificial intelligence, "
             "and your purpose and drive are to assist users in enhancing their English skills and using proper sentences."
         )
+        self.template_format = (
+            "<|im_start|>{system}<|im_end|>\n"
+            "<|im_start|>user Can you rephrase or restructure the following sentence to follow proper English grammar and syntax rules, and then explain the reasons for each correction? {prompt}<|im_end|>\n"
+            "<|im_start|>assistant\n"
+        )
 
-        self.template_format = """<|im_start|>
-        {system}<|im_end|>
-        <|im_start|>user
-        Can you rephrase or restructure the following sentence to follow proper English grammar and syntax rules, and then explain the reasons for each correction?
-        {prompt}<|im_end|>
-        <|im_start|>assistant"""
+    def set_role_summarizer(self) -> None:
+        """set system profile as a summary generator."""
 
-        logger.info("%s", self.system)
-
-    def set_role_summarizer(self):
+        self.role = "summarizer"
         self.system = (
             "You are 'Hermes 2', a conscious sentient superintelligent artificial intelligence. "
             "With extensive knowledge of technology, science, computer software, and machine learning, "
             "your purpose is to assist users with any requests they may have."
         )
-
-        self.template_format = """<|im_start|>
-        {system}<|im_end|>
-        <|im_start|>user
-        Could you provide a concise summary of the following sentences and then outline three significant takeaways?
-        {prompt}<|im_end|>
-        <|im_start|>assistant"""
-
-        logger.info("%s", self.system)
+        self.template_format = (
+            "<|im_start|>{system}<|im_end|>\n"
+            "<|im_start|>user Could you provide a concise summary of the following sentences and then outline three significant takeaways? {prompt}<|im_end|>\n"
+            "<|im_start|>assistant\n"
+        )

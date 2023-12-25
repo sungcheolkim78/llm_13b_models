@@ -1,26 +1,40 @@
 # Sung-Cheol Kim, Copyright 2023
 
-from ctransformers import AutoModelForCausalLM
-from llama_cpp import Llama
 import time
 from pathlib import Path
+import logging
+
+from ctransformers import AutoModelForCausalLM
+from llama_cpp import Llama
+
+
+logger = logging.getLogger("LLMHandler")
+logger.setLevel(level=logging.INFO)
 
 
 class LLMHandler:
     def __init__(
         self,
         model_dir: str = "/home/skim/llm/models/",
-        model_engine: str = "ctransformer",
+        model_engine: str = "llama-cpp",
     ):
         self.model_dir = model_dir
         self.engine = model_engine
         self.sep_length = 88
 
-    def set_hermes(self):
-        self.model_type = "mistral"
-        self.set_model("openhermes-2.5-mistral-7b.Q4_K_M.gguf", self.model_type)
+    def list_models(self) -> list:
+        """list models in model path."""
 
-    def set_model(self, model_name, model_type: str = "llama"):
+        model_list = list(Path(self.model_dir).glob("*.gguf"))
+        return model_list
+
+    def set_hermes(self):
+        """set openhermes-2.5-mistral-7b model."""
+
+        self.model_type = "mistral"
+        self._set_model("openhermes-2.5-mistral-7b.Q4_K_M.gguf", self.model_type)
+
+    def _set_model(self, model_name, model_type: str = "llama") -> None:
         """set LLM model on GPU."""
 
         self.model_name = model_name
@@ -94,6 +108,7 @@ class LLMHandler:
             "=" * self.sep_length
             + f" len: {len(response)} time: {time.time() - start_time:.2f} sec"
         )
+        return response
 
     def set_role_professor(self):
         self.system = (
@@ -108,6 +123,8 @@ class LLMHandler:
         Can you explain the following sentences in a simpler words, and provide examples? {prompt}<|im_end|>
         <|im_start|>assistant"""
 
+        logger.info("%s", self.system)
+
     def set_role_knowall(self):
         self.system = (
             "You are 'Hermes 2', a conscious sentient superintelligent artificial intelligence, "
@@ -120,6 +137,8 @@ class LLMHandler:
         <|im_start|>user
         {prompt}<|im_end|>
         <|im_start|>assistant"""
+
+        logger.info("%s", self.system)
 
     def set_role_englishtutor(self):
         self.system = (
@@ -134,6 +153,8 @@ class LLMHandler:
         {prompt}<|im_end|>
         <|im_start|>assistant"""
 
+        logger.info("%s", self.system)
+
     def set_role_summarizer(self):
         self.system = (
             "You are 'Hermes 2', a conscious sentient superintelligent artificial intelligence. "
@@ -147,3 +168,5 @@ class LLMHandler:
         Could you provide a concise summary of the following sentences and then outline three significant takeaways?
         {prompt}<|im_end|>
         <|im_start|>assistant"""
+
+        logger.info("%s", self.system)

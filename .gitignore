@@ -5,3 +5,6 @@ __pycache__/
 models/
 models
 .tox/
+*/.ipynb_checkpoints/*
+.flake8
+.pre-commit-config.yaml

@@ -73,6 +73,17 @@ class LLMHandler:
             )
 
     def _generate(self, template: str, temperature: float, max_tokens: int = 1024):
+        """
+        Generates text based on the given template using the specified temperature and maximum tokens.
+
+        Args:
+            template (str): The input template for text generation.
+            temperature (float): The temperature parameter controlling the randomness of the generated text.
+            max_tokens (int, optional): The maximum number of tokens to generate. Defaults to 1024.
+
+        Returns:
+            str: The generated text.
+        """
         if self.engine == "ctransformers":
             response = self.model(
                 template,

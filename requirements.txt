@@ -1,5 +1,7 @@
-ctransformers[cuda]
-pytest
+black[jupyter]
 coverage
-black
-llama-cpp-python
+ctransformers[cuda]
+llama-cpp-python[server]
+openai
+langchain
+pytest

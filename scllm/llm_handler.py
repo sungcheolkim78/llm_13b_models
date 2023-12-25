@@ -72,7 +72,7 @@ class LLMHandler:
                 verbose=False,
             )
 
-    def _generate(self, template: str, temperature: float):
+    def _generate(self, template: str, temperature: float, max_tokens: int = 1024):
         if self.engine == "ctransformers":
             response = self.model(
                 template,
@@ -85,7 +85,7 @@ class LLMHandler:
         elif self.engine == "llama-cpp":
             response = self.model(
                 template,
-                max_tokens=1024,
+                max_tokens=max_tokens,
                 temperature=temperature,
                 top_k=10,
                 top_p=0.95,
@@ -94,7 +94,12 @@ class LLMHandler:
             return response["choices"][0]["text"]
 
     def run_query_with_system(
-        self, prompt, system=None, template_format=None, temperature=0.4
+        self,
+        prompt,
+        system=None,
+        template_format=None,
+        temperature: float = 0.4,
+        max_tokens: int = 1024,
     ) -> str:
         """generate sentences using llm model with system template and prompt."""
 
@@ -107,7 +112,7 @@ class LLMHandler:
         # show settings
         print("=" * self.sep_length)
         print(system)
-        print(f"Temperature: {temperature}")
+        print(f"Temperature: {temperature} Max Tokens: {max_tokens}")
         print("=" * self.sep_length)
 
         # show prompt (only from user. full prompt is defined at template_format.)
@@ -115,7 +120,7 @@ class LLMHandler:
         print(prompt)
         print("-" * self.sep_length)
 
-        response = self._generate(template, temperature)
+        response = self._generate(template, temperature, max_tokens)
 
         # show response
         print(response)

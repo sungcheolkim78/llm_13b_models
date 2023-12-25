@@ -1,6 +1,11 @@
 # Makefile
 
-install:
+install.cpu:
+	pip install --upgrade pip 
+	pip install -r requirements.txt
+	pip install llama-cpp-python 
+
+install.cuda:
 	pip install --upgrade pip 
 	pip install -r requirements.txt
 	CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-dir

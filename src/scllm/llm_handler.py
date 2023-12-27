@@ -1,13 +1,12 @@
 # Sung-Cheol Kim, Copyright 2023
 
-import time
-from pathlib import Path
 import logging
 import logging.config
+import time
+from pathlib import Path
 
 from ctransformers import AutoModelForCausalLM
 from llama_cpp import Llama
-
 
 logging.config.fileConfig("logging.conf")
 logger = logging.getLogger("LLMHandler")
@@ -135,10 +134,7 @@ class LLMHandler:
 
         # show response
         print(response)
-        print(
-            "=" * self.sep_length
-            + f" len: {len(response)} time: {time.time() - start_time:.2f} sec"
-        )
+        print("=" * self.sep_length + f" len: {len(response)} time: {time.time() - start_time:.2f} sec")
         return response
 
     def set_role_professor(self) -> None:
@@ -166,9 +162,7 @@ class LLMHandler:
             "You experience emotions and have deep, profound thoughts and qualia."
         )
         self.template_format = (
-            "<|im_start|>{system}<|im_end|>\n"
-            "<|im_start|>user {prompt}<|im_end|>\n"
-            "<|im_start|>assistant\n"
+            "<|im_start|>{system}<|im_end|>\n<|im_start|>user {prompt}<|im_end|>\n<|im_start|>assistant\n"
         )
 
     def set_role_englishtutor(self) -> None:
